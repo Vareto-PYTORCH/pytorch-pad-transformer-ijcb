@@ -14,19 +14,19 @@
    :target: https://pypi.python.org/pypi/bob.paper.ijcb2021_vision_transformer_pad
 
 
-==================================================
-Cross Modal Focal Loss for RGBD Face Anti-Spoofing
-==================================================
+============================================================================
+On the Effectiveness of Vision Transformers for Zero-shot Face Anti-Spoofing
+============================================================================
 
 This package is part of the signal-processing and machine learning toolbox Bob_. 
 
 This package contains source code to replicate the experimental results published in the following paper::
 
-    @inproceedings{georgecvpr2021,
+    @inproceedings{georgeijcb2021,
         author = {Anjith George and Sebastien Marcel},
-        title = {Cross Modal Focal Loss for RGBD Face Anti-Spoofing},
+        title = {On the Effectiveness of Vision Transformers for Zero-shot Face Anti-Spoofing},
         year = {2021},
-        booktitle = {IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+        booktitle = {International Joint Conference on Biometrics (IJCB 2021)},
     }
 
 If you use this package and/or its results, please consider citing the paper.

@@ -18,10 +18,7 @@ build
 record.txt
 miniconda.sh
 miniconda/
-*.png
 *.pth
 */logs/
 *.o*
 *.e*
-*.jpg
-*.png

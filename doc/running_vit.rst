@@ -1,5 +1,5 @@
-Training CNN using Cross Modal Focal Loss
-=========================================
+Training ViT Model for PAD
+==========================
 
 This section describes the RGB-D face PAD network  with the new loss function described in the publication. It is **strongly recommended** to check the publication for better understanding of the described work-flow. The multi-head architecture is referred to as RGBD-MH in the rest of the documentation.
 
