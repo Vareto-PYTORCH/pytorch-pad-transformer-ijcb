@@ -6,8 +6,8 @@ Preprocessing
 
 SETSHELL grid
 ./bin/bob pad vanilla-pad \
--d /idiap/user/ageorge/WORK/BATL_ENV_Bob9/src/bob.paper.ijcb2021_vision_transformer_pad/bob.paper.ijcb2021_vision_transformer_pad/config/DB/database_template.py \
--p /idiap/user/ageorge/WORK/BATL_ENV_Bob9/src/bob.paper.ijcb2021_vision_transformer_pad/bob.paper.ijcb2021_vision_transformer_pad/config/Preprocessor/Preprocessor.py \
+-d /idiap/user/ageorge/WORK/BATL_ENV_Bob9/src/bob.paper.ijcb2021_vision_transformer_pad/bob/paper/ijcb2021_vision_transformer_pad/config/DB/database_template.py \
+-p /idiap/user/ageorge/WORK/BATL_ENV_Bob9/src/bob.paper.ijcb2021_vision_transformer_pad/bob/paper/ijcb2021_vision_transformer_pad/config/Preprocessor/Preprocessor.py \
 -f transform \
 -o /idiap/temp/ageorge/IJCB_ViT_PaperPackage/pipeline/ -vvv -l sge
 

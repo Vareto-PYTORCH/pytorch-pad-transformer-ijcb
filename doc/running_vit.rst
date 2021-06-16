@@ -6,7 +6,7 @@ This section describes the RGB-D face PAD network  with the new loss function de
 .. note::
     For the experiments discussed in this section, the HQ-WMCA dataset needs to be downloaded and installed in your system. Please refer to :ref:`bob.pad.face.baselines` section in the documentation of ``bob.pad.face`` package for more details on how to run the face PAD experiments and setup the databases. 
 
-For reproducing the experiments with RGBD-MH architecture and CMFL. There are mainly four stages. Each of them are described here.
+For reproducing the experiments with RGBD-MH architecture and CMFL. There are mainly four stages. Each of them are described here [GMV21]_.
 
 Preprocessing data
 ------------------
