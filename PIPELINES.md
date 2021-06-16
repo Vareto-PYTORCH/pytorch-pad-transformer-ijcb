@@ -9,15 +9,10 @@ SETSHELL grid
 -d /idiap/user/ageorge/WORK/BATL_ENV_Bob9/src/bob.paper.ijcb2021_vision_transformer_pad/bob/paper/ijcb2021_vision_transformer_pad/config/DB/database_template.py \
 -p /idiap/user/ageorge/WORK/BATL_ENV_Bob9/src/bob.paper.ijcb2021_vision_transformer_pad/bob/paper/ijcb2021_vision_transformer_pad/config/Preprocessor/Preprocessor.py \
 -f transform \
--o /idiap/temp/ageorge/IJCB_ViT_PaperPackage/pipeline/ -vvv -l sge
+-o /idiap/temp/ageorge/IJCB_ViT_PaperPackage/pipeline/ -vvv -l sge-gpu
 
 
 
-No assume it works, and then I have the preprocessed files ported from the old ones here:
-
-
-
-/idiap/temp/ageorge/CVPR_CMFL_PaperPackage/new_video_like_container/
 
 
 

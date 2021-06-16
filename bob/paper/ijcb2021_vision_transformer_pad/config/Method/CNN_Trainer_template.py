@@ -10,8 +10,6 @@ import numpy as np
 
 from torch.autograd import Variable
 
-from bob.paper.ijcb2021_vision_transformer_pad.losses import CMFL
-
 from bob.extension import rc
 
 import bob.ip.stereo
@@ -30,18 +28,16 @@ from bob.io.stream import Stream
 
 from bob.learn.pytorch.datasets import DataFolder
 
-from bob.paper.ijcb2021_vision_transformer_pad.architectures import RGBDDeepPixBiSGAPMHCrossModal
+from bob.paper.ijcb2021_vision_transformer_pad.architectures import ViTranZFAS
 
 from bob.paper.ijcb2021_vision_transformer_pad.datasets import DataFolder
 
+# from bob.pad.local.datasets import DataFolderPixBiS
 
 
 color = Stream('color')
 
-intel_depth = Stream('intel_depth').adjust(color).warp(color)
-
-streams = { 'color'     : color,
-            'depth'     : intel_depth}
+streams = { 'color'     : color}
 
 
 #==============================================================================
@@ -71,16 +67,16 @@ streams = { 'color'     : color,
 # PREPROCESSED_DIR= {{PREPROCESSED_DIR}}
 
 
-PREPROCESSED_DIR='/idiap/temp/ageorge/CVPR_CMFL_PaperPackage/preprocessed_ported/'
+PREPROCESSED_DIR='/idiap/temp/ageorge/IJCB_ViT_PaperPackage/preprocessed-new/'
 
 # CNN_OUTPUT_DIR= {{CNN_OUTPUT_DIR}}
 
-CNN_OUTPUT_DIR= '/idiap/temp/ageorge/CVPR_CMFL_PaperPackage/CNN/LOO_Makeup/'
+CNN_OUTPUT_DIR= '/idiap/temp/ageorge/IJCB_ViT_PaperPackage/CNN/LOO_Makeup/'
 
 
 # ANNOTATIONS_DIR={{ANNOTATIONS_DIR}}
 
-ANNOTATIONS_DIR='/idiap/temp/ageorge/CVPR_CMFL_PaperPackage/newannotations2/'
+ANNOTATIONS_DIR='/idiap/temp/ageorge/IJCB_ViT_PaperPackage/annotations-new/'
 
 
 ORIGINAL_EXTENSION='.h5'
@@ -128,7 +124,7 @@ groups={"train":train_groups,"val":val_groups}
 #==============================================================================
 # Initialize the torch dataset, subselect channels from the pretrained files if needed.
 
-SELECTED_CHANNELS = [0,1,2,3] 
+SELECTED_CHANNELS = [0,1,2] 
 ####################################################################
 
 
@@ -152,10 +148,15 @@ def custom_function(np_img,target):
 
 img_transform={}
 
-img_transform['train'] = transforms.Compose([ChannelSelect(selected_channels = SELECTED_CHANNELS),RandomHorizontalFlipImage(p=0.5),transforms.ToTensor()])
+img_transform['train'] = transforms.Compose([ChannelSelect(selected_channels = SELECTED_CHANNELS),transforms.ToPILImage(),transforms.RandomHorizontalFlip(p=0.5),transforms.ToTensor(),transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])])
 
-img_transform['val'] = transforms.Compose([ChannelSelect(selected_channels = SELECTED_CHANNELS),transforms.ToTensor()])
+img_transform['val'] = transforms.Compose([ChannelSelect(selected_channels = SELECTED_CHANNELS),transforms.ToPILImage(),transforms.ToTensor(),transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])])
 
+
+
+
+
+data_balance={"train":True,"val":True}
 
 
 dataset={}
@@ -164,13 +165,12 @@ for phase in phases:
 
 	dataset[phase] = DataFolder(data_folder=PREPROCESSED_DIR,
 						 transform=img_transform[phase],
-						 extension=ORIGINAL_EXTENSION,
+						 extension='.h5',
 						 bob_hldi_instance=database,
 						 groups=groups[phase],
 						 protocol=PROTOCOL,
 						 purposes=['real', 'attack'],
 						 allow_missing_files=True, custom_func=custom_function)
-
 
 
 
@@ -181,9 +181,9 @@ NUM_CHANNELS = len(SELECTED_CHANNELS)
 
 ####################################################################
 do_crossvalidation=DO_CROSS_VALIDATION
-batch_size = 64
+batch_size = 16
 num_workers = 4
-epochs=25
+epochs=20
 learning_rate=0.0001
 weight_decay = 0.000001
 seed = 3
@@ -199,20 +199,25 @@ assert(len(SELECTED_CHANNELS)==NUM_CHANNELS)
 #==============================================================================
 # Load the architecture
 
-network=RGBDDeepPixBiSGAPMHCrossModal(pretrained=True,num_channels=NUM_CHANNELS)
+network=ViTranZFAS(pretrained=True)
 
 # set trainable parameters
 
+
 for name,param in  network.named_parameters():
-	param.requires_grad = True
+	param.requires_grad = False
+	# print(name)
+
+	if 'head' in name:
+		# print('grad',name)
+		param.requires_grad = True
 
 
 # loss definitions
 
 
+criterion_pixel = nn.BCELoss()
 criterion_bce= nn.BCELoss()
-
-criterion_cmfl = CMFL(alpha=1, gamma= 3, binary= False, multiplier=2)
 
 
 # optimizer initialization
@@ -229,21 +234,24 @@ def compute_loss(network,img, labels, device):
 	device in which the computation will be performed. 
 	"""
 
-	beta = 0.5
-
 	imagesv = Variable(img['image'].to(device))
+
+	labelsv_pixel = Variable(labels['pixel_mask'].to(device))
 
 	labelsv_binary = Variable(labels['binary_target'].to(device))
 
-	gap, op, op_rgb, op_d = network(imagesv)
+	out = network(imagesv)
 
-	loss_cmfl = criterion_cmfl(op_rgb,op_d,labelsv_binary.unsqueeze(1).float())
+	beta=0.5
 
-	loss_bce = criterion_bce(op,labelsv_binary.unsqueeze(1).float())
+	# loss_pixel = criterion_pixel(out[0].squeeze(1),labelsv_pixel.float())
 
-	loss= beta*loss_cmfl +(1-beta)*loss_bce
+	loss_bce = criterion_bce(out[1],labelsv_binary.unsqueeze(1).float())
+						
+	# loss = beta*loss_bce + (1.0-beta)*loss_pixel
 
-	return loss
+	return loss_bce
+
 
 
 #==============================================================================
@@ -251,11 +259,11 @@ def compute_loss(network,img, labels, device):
 Note: Running in GPU
 
 jman submit --queue sgpu --memory 24 \
---name CMFL \
---log-dir /idiap/temp/ageorge/CVPR_CMFL_PaperPackage/CNN/LOO_Makeup/logs/ \
+--name ViT \
+--log-dir /idiap/temp/ageorge/IJCB_ViT_PaperPackage/CNN/LOO_Makeup/logs/ \
 --environment="PYTHONUNBUFFERED=1" -- \
 ./bin/train_generic.py \
-/idiap/user/ageorge/WORK/BATL_ENV_Bob9/src/bob.paper.ijcb2021_vision_transformer_pad/bob.paper.ijcb2021_vision_transformer_pad/config/Method/CNN_Trainer_template.py -vvv --use-gpu
+/idiap/user/ageorge/WORK/BATL_ENV_Bob9/src/bob.paper.ijcb2021_vision_transformer_pad/bob/paper/ijcb2021_vision_transformer_pad/config/Method/CNN_Trainer_template.py -vvv --use-gpu
 
 """
 
