@@ -15,17 +15,14 @@ import bob.ip.stereo
 
 color = Stream('color')
 
-intel_depth = Stream('intel_depth').adjust(color).warp(color)
 
 
-
-streams = { 'color'     : color,
-            'depth'     : intel_depth}
+streams = { 'color'     : color}
 
 # *****
 
 PROTOCOL = 'grand_test-curated'
-ANNOTATIONS_DIR='/idiap/temp/ageorge/CVPR_CMFL_PaperPackage/annotations-new/'
+ANNOTATIONS_DIR='/idiap/temp/ageorge/IJCB_ViT_PaperPackage/annotations-new/'
 
 
 from bob.extension import rc as _rc

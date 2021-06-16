@@ -4,29 +4,12 @@ Preprocessing
 ./bin/bob_dbmanage.py hqwmca download
 
 
-
-
-bob pad vanilla-pad \
--d example/db_configs/batl_odin_db.py \
--p example/preprocessing/pipeline_config_224_RGB.py \
--f transform \
--g train -g dev -g eval \
--o <PREPROCESSED_FOLDER>
-
-
-
-x-special/nautilus-clipboard
-copy
-sftp://ageorge@login.idiap.ch/idiap/user/ageorge/WORK/BATL_ENV_Bob9/src/bob.paper.ijcb2021_vision_transformer_pad/bob.paper.ijcb2021_vision_transformer_pad/config/DB/database_template.py
-
-
-
 SETSHELL grid
 ./bin/bob pad vanilla-pad \
 -d /idiap/user/ageorge/WORK/BATL_ENV_Bob9/src/bob.paper.ijcb2021_vision_transformer_pad/bob.paper.ijcb2021_vision_transformer_pad/config/DB/database_template.py \
 -p /idiap/user/ageorge/WORK/BATL_ENV_Bob9/src/bob.paper.ijcb2021_vision_transformer_pad/bob.paper.ijcb2021_vision_transformer_pad/config/Preprocessor/Preprocessor.py \
 -f transform \
--o /idiap/temp/ageorge/CVPR_CMFL_PaperPackage/pipeline-new/ -vvv -l sge
+-o /idiap/temp/ageorge/IJCB_ViT_PaperPackage/pipeline/ -vvv -l sge
 
 
 
