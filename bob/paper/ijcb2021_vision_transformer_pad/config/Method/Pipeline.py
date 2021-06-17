@@ -49,10 +49,10 @@ streams = { 'color'     : color,
             'depth'     : intel_depth}
 
 PROTOCOL = 'LOO_Makeup'
-ANNOTATIONS_DIR='/idiap/temp/ageorge/CVPR_CMFL_PaperPackage/annotations-new//'
+ANNOTATIONS_DIR='/idiap/temp/ageorge/CVPR_CMFL_PaperPackage/annotations-new/'
 
 PREPROCESSED_DIR='/idiap/temp/ageorge/CVPR_CMFL_PaperPackage/preprocessed-new/'
-EXTRACTED_DIR='/idiap/temp/ageorge/CVPR_CMFL_PaperPackage/ExtractedMakeup-2/'
+# EXTRACTED_DIR='/idiap/temp/ageorge/CVPR_CMFL_PaperPackage/ExtractedMakeup-2/'
 
 from bob.extension import rc as _rc
 from bob.paper.ijcb2021_vision_transformer_pad.database import HQWMCAPadDatabase
@@ -138,7 +138,8 @@ preprocessor = bob.pipelines.CheckpointWrapper(
 
 from bob.paper.ijcb2021_vision_transformer_pad.extractor import GenericExtractorMod
 
-from bob.paper.ijcb2021_vision_transformer_pad.architectures import  RGBDDeepPixBiSGAPMHCrossModal
+from bob.paper.ijcb2021_vision_transformer_pad.architectures import  ViTranZFAS
+
 from bob.bio.base.transformers import ExtractorTransformer
 
 
@@ -149,11 +150,11 @@ from bob.bio.base.transformers import ExtractorTransformer
 ####################################################################
 
 
-MODEL_FILE='/idiap/temp/ageorge/CVPR_CMFL_PaperPackage/CNN/LOO_Makeup/model_0_0.pth'
+MODEL_FILE='/idiap/temp/ageorge/IJCB_ViT_PaperPackage/CNN/LOO_Makeup/model_0_0.pth'
 
-SELECTED_CHANNELS = [0,1,2,3] 
+SELECTED_CHANNELS = [0,1,2] 
 ####################################################################
-_img_transform =transforms.Compose([ChannelSelect(selected_channels = SELECTED_CHANNELS),transforms.ToTensor()])
+_img_transform =transforms.Compose([ChannelSelect(selected_channels = SELECTED_CHANNELS),transforms.ToPILImage(),transforms.ToTensor(),transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])])
 
 
 
@@ -165,29 +166,23 @@ def extractor_function(output,kwargs):
   scoring_method=kwargs['scoring_method']
   #gap, op_rgbd, op_rgb, op_d
 
-  output_pixel = output[0].data.numpy().flatten()
-  output_binary_1 = output[1].data.numpy().flatten()
-  output_binary_2 = output[2].data.numpy().flatten()
-  output_binary_3 = output[3].data.numpy().flatten()
+  embedding = output[0].data.numpy().flatten()
+  binary = output[1].data.numpy().flatten()
 
-  if scoring_method=='rgb':
-    score=np.mean(output_binary_2)
-  elif scoring_method=='depth':
-    score=np.mean(output_binary_3)
-  elif scoring_method=='both':
-    score=np.mean(output_binary_2+output_binary_3)/2.0
-  elif scoring_method=='binary':
-    score=np.mean(output_binary_1+output_binary_2+output_binary_3)/3.0
-  elif scoring_method=='rgbd':
-    score= np.mean(output_binary_1)
+
+  if scoring_method=='binary':
+    score=np.mean(binary)
+  elif scoring_method=='embedding':
+    score=embedding.copy()
   else:
     raise ValueError('Scoring method {} is not implemented.'.format(scoring_method))
 
   return score
 
-network= RGBDDeepPixBiSGAPMHCrossModal(pretrained=True, num_channels=len(SELECTED_CHANNELS))
 
-_image_extracor=GenericExtractorMod(network=network,extractor_function=extractor_function,transforms=_img_transform, extractor_file=MODEL_FILE,scoring_method='rgbd')
+network=ViTranZFAS(pretrained=True)
+
+_image_extracor=GenericExtractorMod(network=network,extractor_function=extractor_function,transforms=_img_transform, extractor_file=MODEL_FILE,scoring_method='binary')
 
 extractor=VideoWrapper(ExtractorTransformer(_image_extracor))
 

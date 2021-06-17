@@ -4,17 +4,18 @@ from torchvision import models
 import numpy as np
 import copy
 
-from bob.pad.local.architectures.utils import SELayer
 import timm
 
 from functools import partial
-from timm.models.vision_transformer import VisionTransformer
+from timm.models.vision_transformer import VisionTransformer, _conv_filter
+
 from timm.models.vision_transformer import default_cfgs
 
 from timm.models.helpers import load_pretrained
 
 # DONOT USE THIS
-# use pip install timm==0.4.5
+# use pip install timm==0.3.4 for this to work with the pretrained stuff
+
 class ViTranZFAS(nn.Module):
 
     """ Deep and Dense MultiChannel PAD
@@ -65,7 +66,7 @@ class ViTranZFAS(nn.Module):
             patch_size=16, embed_dim=768, depth=12, num_heads=12, mlp_ratio=4, qkv_bias=True,
             norm_layer=partial(nn.LayerNorm, eps=1e-6))
         self.vit.default_cfg = default_cfgs['vit_base_patch16_224']
-        # load_pretrained(self.vit, num_classes=1000, in_chans=3, filter_fn=_conv_filter)
+        load_pretrained(self.vit, num_classes=1000, in_chans=3, filter_fn=_conv_filter)
 
         #feat = list(vit.children())
 

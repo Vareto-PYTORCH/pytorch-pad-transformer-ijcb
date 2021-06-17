@@ -259,7 +259,7 @@ class DataFolder(data.Dataset):
                 allow_missing_files=self.allow_missing_files,
             )
 
-            print('file_names_labels_indices',file_names_labels_indices)
+            # print('file_names_labels_indices',file_names_labels_indices)
 
             if self.allow_missing_files:  # return only existing files
 

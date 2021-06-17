@@ -68,6 +68,7 @@ streams = { 'color'     : color}
 
 
 PREPROCESSED_DIR='/idiap/temp/ageorge/IJCB_ViT_PaperPackage/preprocessed-new/'
+PREPROCESSED_DIR='/idiap/temp/ageorge/CVPR_CMFL_PaperPackage/preprocessed_ported/'
 
 # CNN_OUTPUT_DIR= {{CNN_OUTPUT_DIR}}
 
