@@ -3,7 +3,7 @@
 
 # Created on Tue May 30 14:11:16 2017
 
-# @author: Olegs Nikisins
+#@author: Anjith George
 
 # ==============================================================================
 # Import what is needed here:

@@ -54,35 +54,17 @@ This will install all the required software to reproduce this paper.
 Configuring the experiments
 ---------------------------
 
-Once the environment is ready. The WMCA and HQWMCA databases need to be downloaded.
-For downloading the WMCA database, please check the following link `Download Instructions for WMCA <https://www.idiap.ch/dataset/wmca>`_.
+Once the environment is ready. The HQWMCA database need to be downloaded.
 For downloading the HQ-WMCA database, please check the following link `Download Instructions for HQ-WMCA <https://www.idiap.ch/dataset/hq-wmca>`_.
 
 
 After downloading the database, you need to set the paths to
-those in the configuration files. Bob_ supports a configuration file
-(``~/.bob_bio_databases.txt``) in your home directory to specify where the
-databases are located. The absolute path to the database and the location store the annotations should be specified. 
-Please specify the paths for the database like below::
+those in the configuration files. Bob_ supports a configuration file (``~/.bobrc``) in your home directory to specify where the databases are located.
 
-    $ cat ~/.bob_bio_databases.txt
-    [YOUR_WMCA_DB_DIRECTORY] = /databases/WMCA/
-    [YOUR_WMCA_ANNOTATIONS_DIRECTORY] = /databases/WMCA/ANNOTATIONS/
-
-Update
-------
-
-With the latest versions, the above part (specifying the location of DB) is handled by an rc file, in ``.bobrc`` file in the home folder::
-
-    $ cat ~/.bobrc
-    {
-    "bob.db.batl.directory": "/databases/WMCA/",
-    "bob.pad.face.database.batl.annotations_temp_dir": "/databases/WMCA/ANNOTATIONS/"
-    "bob.paper.ijcb2021_vision_transformer_pad.preprocessed_directory:"/preprocessed/",
-    "bob.paper.ijcb2021_vision_transformer_pad.cnn_output_dir":"/cnn_outputdir/"
-    }
-    
-Similarly, set the paths for HQ-WMCA datasets as well.
+   $ cat ~/.bobrc
+   {
+   "bob.db.hqwmca.directory": "../face-station/"
+   }
 
 Contact
 -------

@@ -79,27 +79,28 @@ def get_file_names_and_labels(
 
             if os.path.isfile(file_name):  # if file is available:
 
-                with h5py.File(file_name, "r") as f_h5py:
+                try:
 
-                    n_frames = len(f_h5py["data"])  # shape[0]
+                    with h5py.File(file_name, "r") as f_h5py:
 
+                        n_frames = len(f_h5py["data"])  # shape[0]
 
-                print('Found:', file_name)
-
-                # elements of tuples in the below list are as follows:
-                # a filename a key is extracted from,
-                # a label corresponding to the file,
-                # a key defining a frame from the file.
-                file_names_labels_indices.extend(
-                    [
-                        (file_name, label, index)
-                        for file_name, label, index in zip(
-                            [file_name] * n_frames,
-                            [label] * n_frames,
-                            range(n_frames),
-                        )
-                    ]
-                )
+                    # elements of tuples in the below list are as follows:
+                    # a filename a key is extracted from,
+                    # a label corresponding to the file,
+                    # a key defining a frame from the file.
+                    file_names_labels_indices.extend(
+                        [
+                            (file_name, label, index)
+                            for file_name, label, index in zip(
+                                [file_name] * n_frames,
+                                [label] * n_frames,
+                                range(n_frames),
+                            )
+                        ]
+                    )
+                except:
+                    pass
 
             else:
                 if not allow_missing_files:
@@ -259,8 +260,6 @@ class DataFolder(data.Dataset):
                 allow_missing_files=self.allow_missing_files,
             )
 
-            # print('file_names_labels_indices',file_names_labels_indices)
-
             if self.allow_missing_files:  # return only existing files
 
                 file_names_labels_indices = [
@@ -272,7 +271,6 @@ class DataFolder(data.Dataset):
             # TODO - add behaviour similar to image folder
             file_names_labels_indices = []
 
-        
         self.file_names_labels_indices = file_names_labels_indices
 
     # ==========================================================================
