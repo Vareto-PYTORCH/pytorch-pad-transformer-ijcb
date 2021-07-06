@@ -68,7 +68,7 @@ streams = { 'color'     : color}
 
 
 PREPROCESSED_DIR='/idiap/temp/ageorge/IJCB_ViT_PaperPackage/preprocessed-new/'
-PREPROCESSED_DIR='/idiap/temp/ageorge/CVPR_CMFL_PaperPackage/preprocessed_ported/'
+# PREPROCESSED_DIR='/idiap/temp/ageorge/CVPR_CMFL_PaperPackage/preprocessed_ported/'
 
 # CNN_OUTPUT_DIR= {{CNN_OUTPUT_DIR}}
 
@@ -202,7 +202,8 @@ assert(len(SELECTED_CHANNELS)==NUM_CHANNELS)
 
 network=ViTranZFAS(pretrained=True)
 
-# set trainable parameters
+# set trainable parameters, here the MLP part is only retrained, modify the following section
+# to change which layers are trained
 
 
 for name,param in  network.named_parameters():
@@ -217,7 +218,6 @@ for name,param in  network.named_parameters():
 # loss definitions
 
 
-criterion_pixel = nn.BCELoss()
 criterion_bce= nn.BCELoss()
 
 
@@ -243,14 +243,8 @@ def compute_loss(network,img, labels, device):
 
 	out = network(imagesv)
 
-	beta=0.5
-
-	# loss_pixel = criterion_pixel(out[0].squeeze(1),labelsv_pixel.float())
-
 	loss_bce = criterion_bce(out[1],labelsv_binary.unsqueeze(1).float())
 						
-	# loss = beta*loss_bce + (1.0-beta)*loss_pixel
-
 	return loss_bce
 
 
