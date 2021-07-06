@@ -52,7 +52,7 @@ PROTOCOL = 'LOO_Makeup'
 ANNOTATIONS_DIR='/idiap/temp/ageorge/CVPR_CMFL_PaperPackage/annotations-new/'
 
 PREPROCESSED_DIR='/idiap/temp/ageorge/CVPR_CMFL_PaperPackage/preprocessed-new/'
-# EXTRACTED_DIR='/idiap/temp/ageorge/CVPR_CMFL_PaperPackage/ExtractedMakeup-2/'
+EXTRACTED_DIR='/idiap/temp/ageorge/IJCB_ViT_PaperPackage/Extracted/'
 
 from bob.extension import rc as _rc
 from bob.paper.ijcb2021_vision_transformer_pad.database import HQWMCAPadDatabase
@@ -187,6 +187,16 @@ _image_extracor=GenericExtractorMod(network=network,extractor_function=extractor
 extractor=VideoWrapper(ExtractorTransformer(_image_extracor))
 
 extractor = bob.pipelines.wrap(["sample"], extractor)
+
+
+extractor = bob.pipelines.CheckpointWrapper(
+    extractor,
+    features_dir=EXTRACTED_DIR
+)
+
+
+
+
 #=======================================================================================
 # Dummy algorithm
 

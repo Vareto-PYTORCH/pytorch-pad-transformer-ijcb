@@ -32,6 +32,12 @@ setup(
 
     install_requires=install_requires,
 
+    entry_points={
+    "dask.client": [
+        "sge-big         = bob.paper.ijcb2021_vision_transformer_pad.distributed.sge_big:dask_client",
+    ],
+    },
+
     # check classifiers, add and remove as you see fit
     # full list here: https://pypi.org/classifiers/
     # don't remove the Bob framework unless it's not a bob package
