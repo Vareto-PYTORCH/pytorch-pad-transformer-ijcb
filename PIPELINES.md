@@ -11,7 +11,9 @@ SETSHELL grid
 -d /idiap/user/ageorge/WORK/BATL_ENV_Bob9/src/bob.paper.ijcb2021_vision_transformer_pad/bob/paper/ijcb2021_vision_transformer_pad/config/DB/database_template.py \
 -p /idiap/user/ageorge/WORK/BATL_ENV_Bob9/src/bob.paper.ijcb2021_vision_transformer_pad/bob/paper/ijcb2021_vision_transformer_pad/config/Preprocessor/Preprocessor.py \
 -f transform \
--o /idiap/temp/ageorge/IJCB_ViT_PaperPackage/pipeline/ -vvv -l sge-gpu
+-g train -g dev -g eval \
+-o /idiap/temp/ageorge/IJCB_ViT_PaperPackage/pipeline/ -vvv -l /idiap/user/ageorge/WORK/BATL_ENV_Bob9/src/bob.paper.ijcb2021_vision_transformer_pad/bob/paper/ijcb2021_vision_transformer_pad/distributed/sge_big.py
+
 
 
 

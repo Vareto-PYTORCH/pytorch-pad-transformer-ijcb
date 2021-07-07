@@ -45,13 +45,12 @@ intel_depth = Stream('intel_depth').adjust(color).warp(color)
 
 
 
-streams = { 'color'     : color,
-            'depth'     : intel_depth}
+streams = { 'color'     : color}
 
 PROTOCOL = 'LOO_Makeup'
-ANNOTATIONS_DIR='/idiap/temp/ageorge/CVPR_CMFL_PaperPackage/annotations-new/'
+ANNOTATIONS_DIR='/idiap/temp/ageorge/IJCB_ViT_PaperPackage/annotations-new/'
 
-PREPROCESSED_DIR='/idiap/temp/ageorge/CVPR_CMFL_PaperPackage/preprocessed-new/'
+PREPROCESSED_DIR='/idiap/temp/ageorge/IJCB_ViT_PaperPackage/preprocessed-new/'
 EXTRACTED_DIR='/idiap/temp/ageorge/IJCB_ViT_PaperPackage/Extracted/'
 
 from bob.extension import rc as _rc
@@ -70,7 +69,7 @@ protocol = PROTOCOL
 groups = ["train", "dev", "eval"]
 
 
-_channel_names = ['color', 'depth']
+_channel_names = ['color']
 
 _preprocessors={}
 
@@ -93,28 +92,6 @@ _image_preprocessor = FaceCropAlign(face_size=FACE_SIZE,
 
 _preprocessors[_channel_names[0]] = VideoWrapper(PreprocessorTransformer(_image_preprocessor))
 
-FACE_SIZE = 224  # The size of the resulting face
-RGB_OUTPUT_FLAG = False  # Gray-scale output
-USE_FACE_ALIGNMENT = True  # use annotations
-MAX_IMAGE_SIZE = None  # no limiting here
-FACE_DETECTION_METHOD = None  # use annotations
-MIN_FACE_SIZE = 50  # skip small faces
-NORMALIZATION_FUNCTION = _norm_func
-NORMALIZATION_FUNCTION_KWARGS = {}
-NORMALIZATION_FUNCTION_KWARGS = {'n_sigma': 3.0, 'norm_method': 'MAD'}
-
-_image_preprocessor_ir = FaceCropAlign(face_size=FACE_SIZE,
-                                       rgb_output_flag=RGB_OUTPUT_FLAG,
-                                       use_face_alignment=USE_FACE_ALIGNMENT,
-                                       alignment_type=ALIGNMENT_TYPE,
-                                       max_image_size=MAX_IMAGE_SIZE,
-                                       face_detection_method=FACE_DETECTION_METHOD,
-                                       min_face_size=MIN_FACE_SIZE,
-                                       normalization_function=NORMALIZATION_FUNCTION,
-                                       normalization_function_kwargs=NORMALIZATION_FUNCTION_KWARGS)
-
-
-_preprocessors[_channel_names[1]] = VideoWrapper(PreprocessorTransformer(_image_preprocessor_ir))
 
 
 preprocessor = PreprocessorTransformer(VideoFaceCropAlignBlockPatch(
@@ -221,6 +198,13 @@ class DummyClassifier(BaseEstimator, ClassifierMixin):
   def decision_function(self,X):
 
     return X
+
+
+
+
+
+classifier = DummyClassifier()
+
 
 
 
