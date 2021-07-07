@@ -110,7 +110,7 @@ To evaluate the models run the following command.
 
 .. code-block:: python
 
-	./bin/bob pad metrics -e -c apcer100 -r attack <folder_to_save_results>/scores-{dev,eval}
+	./bin/bob pad metrics -e -c apcer100 -r attack <folder_to_save_results>/scores-{dev,eval}.csv
 
 Using pretrained models
 =======================
@@ -120,5 +120,4 @@ Using pretrained models
     The training of models have some randomness associated with even with all the seeds set. The variations could arise from the
     platforms, versions of pytorch, non-deterministic nature in GPUs and so on. You can go through the follwing link on how to achive best reproducibility
     in PyTorch `PyTorch Reproducibility <https://pytorch.org/docs/stable/notes/randomness.html>`_. If you wish to reproduce the exact same results in the paper, we suggest 
-    you to use the pretrained models shipped with the package. The pretrained models can be downloaded from `Download Models for HQ-WMCA <https://www.idiap.ch/software/bob/data/bob/bob.paper.cross_modal_focal_loss_cvpr2021/HQ-WMCA_CMFL-f5223d9f.tar.gz>`_. Also `Download models for WMCA <https://www.idiap.ch/software/bob/data/bob/bob.paper.cross_modal_focal_loss_cvpr2021/WMCA_CMFL-068ddd9b.tar.gz>`_.
-
+    you to use the pretrained models shipped with the package. The pretrained models for each protocol can be downloaded from the base path `Download Models for HQ-WMCA <https://www.idiap.ch/software/bob/data/bob/bob.paper.ijcb2021_vision_transformer_pad/>`_. 
