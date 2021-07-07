@@ -177,3 +177,5 @@ $ ./bin/bdt dav upload -vvv --checksum /idiap/temp/ageorge/IJCB_ViT_PaperPackage
 $ ./bin/bdt dav upload -vvv --checksum /idiap/temp/ageorge/IJCB_ViT_PaperPackage/models/*.pth data/bob/bob.paper.ijcb2021_vision_transformer_pad/ --execute
 
 Copied the models for all protocols
+
+This is dev
