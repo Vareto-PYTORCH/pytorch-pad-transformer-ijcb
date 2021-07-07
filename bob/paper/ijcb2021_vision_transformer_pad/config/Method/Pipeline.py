@@ -41,7 +41,7 @@ import numpy as np
 
 color = Stream('color')
 
-intel_depth = Stream('intel_depth').adjust(color).warp(color)
+# intel_depth = Stream('intel_depth').adjust(color).warp(color)
 
 
 
@@ -51,7 +51,7 @@ PROTOCOL = 'LOO_Makeup'
 ANNOTATIONS_DIR='/idiap/temp/ageorge/IJCB_ViT_PaperPackage/annotations-new/'
 
 PREPROCESSED_DIR='/idiap/temp/ageorge/IJCB_ViT_PaperPackage/preprocessed-new/'
-EXTRACTED_DIR='/idiap/temp/ageorge/IJCB_ViT_PaperPackage/Extracted/'
+# EXTRACTED_DIR='/idiap/temp/ageorge/IJCB_ViT_PaperPackage/Extracted/'
 
 from bob.extension import rc as _rc
 from bob.paper.ijcb2021_vision_transformer_pad.database import HQWMCAPadDatabase
@@ -127,7 +127,7 @@ from bob.bio.base.transformers import ExtractorTransformer
 ####################################################################
 
 
-MODEL_FILE='/idiap/temp/ageorge/IJCB_ViT_PaperPackage/CNN/LOO_Makeup/model_0_0.pth'
+MODEL_FILE='/idiap/temp/ageorge/IJCB_ViT_PaperPackage/models_hqwmca_part1/LOO_Makeup.pth'
 
 SELECTED_CHANNELS = [0,1,2] 
 ####################################################################
@@ -166,10 +166,10 @@ extractor=VideoWrapper(ExtractorTransformer(_image_extracor))
 extractor = bob.pipelines.wrap(["sample"], extractor)
 
 
-extractor = bob.pipelines.CheckpointWrapper(
-    extractor,
-    features_dir=EXTRACTED_DIR
-)
+# extractor = bob.pipelines.CheckpointWrapper(
+#     extractor,
+#     features_dir=EXTRACTED_DIR
+# )
 
 
 
