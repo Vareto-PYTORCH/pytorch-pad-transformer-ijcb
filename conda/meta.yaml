@@ -43,6 +43,7 @@ requirements:
     - torchvision {{ torchvision }}  # [linux]
     - h5py {{ h5py }}
     - scikit-learn {{ scikit_learn }}
+    - timm==0.3.4
 
     # place your other host dependencies here
   run:
@@ -55,6 +56,7 @@ requirements:
     - {{ pin_compatible('torchvision') }}  # [linux]
     - {{ pin_compatible('h5py') }}
     - {{ pin_compatible('scikit-learn') }}
+    - timm==0.3.4
     - future
 
     # place other runtime dependencies here (same as requirements.txt)
