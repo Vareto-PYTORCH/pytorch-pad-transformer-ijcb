@@ -8,3 +8,4 @@ bob.io.image
 bob.pad.base
 bob.pad.face
 bob.learn.pytorch
+timm==0.3.4

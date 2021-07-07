@@ -41,17 +41,12 @@ import numpy as np
 
 color = Stream('color')
 
-# intel_depth = Stream('intel_depth').adjust(color).warp(color)
-
-
-
 streams = { 'color'     : color}
 
-PROTOCOL = 'LOO_Makeup'
-ANNOTATIONS_DIR='/idiap/temp/ageorge/IJCB_ViT_PaperPackage/annotations-new/'
+PROTOCOL = {{PROTOCOL}}
+ANNOTATIONS_DIR={{ANNOTATIONS_DIR}}
 
-PREPROCESSED_DIR='/idiap/temp/ageorge/IJCB_ViT_PaperPackage/preprocessed-new/'
-# EXTRACTED_DIR='/idiap/temp/ageorge/IJCB_ViT_PaperPackage/Extracted/'
+PREPROCESSED_DIR={{PREPROCESSED_DIR}}
 
 from bob.extension import rc as _rc
 from bob.paper.ijcb2021_vision_transformer_pad.database import HQWMCAPadDatabase
@@ -120,14 +115,7 @@ from bob.paper.ijcb2021_vision_transformer_pad.architectures import  ViTranZFAS
 from bob.bio.base.transformers import ExtractorTransformer
 
 
-
-# path to the model for the specific protocol
-
-# MODEL_FILE= '/idiap/temp/ageorge/HQWMCA_RGBD/NEWPIPELINES/Baselines/RGBDDeepPixBiSGAPMHCrossModalWBinaryHMR4/GENERATED-CURATED/CNN/RGBDDeepPixBiSGAPMHCrossModalWBinaryHMR_LOO_Makeup_SEED_3_LTK_4_Gamma_3_BIN_False_MULT_2/model_0_0.pth'#
-####################################################################
-
-
-MODEL_FILE='/idiap/temp/ageorge/IJCB_ViT_PaperPackage/models_hqwmca_part1/LOO_Makeup.pth'
+MODEL_FILE= {{MODEL_FILE}}
 
 SELECTED_CHANNELS = [0,1,2] 
 ####################################################################
@@ -135,13 +123,9 @@ _img_transform =transforms.Compose([ChannelSelect(selected_channels = SELECTED_C
 
 
 
-# function defining type of scoring, default is from the RGB-D branch
 def extractor_function(output,kwargs):
 
-  #print("scoring_method",kwargs['scoring_method'])
-
   scoring_method=kwargs['scoring_method']
-  #gap, op_rgbd, op_rgb, op_d
 
   embedding = output[0].data.numpy().flatten()
   binary = output[1].data.numpy().flatten()
@@ -164,14 +148,6 @@ _image_extracor=GenericExtractorMod(network=network,extractor_function=extractor
 extractor=VideoWrapper(ExtractorTransformer(_image_extracor))
 
 extractor = bob.pipelines.wrap(["sample"], extractor)
-
-
-# extractor = bob.pipelines.CheckpointWrapper(
-#     extractor,
-#     features_dir=EXTRACTED_DIR
-# )
-
-
 
 
 #=======================================================================================
@@ -202,12 +178,7 @@ class DummyClassifier(BaseEstimator, ClassifierMixin):
 
 
 
-
 classifier = DummyClassifier()
-
-
-
-
 
 
 classifier = DummyClassifier()
@@ -230,10 +201,6 @@ class VideoToFrames(TransformerMixin, BaseEstimator):
         output = []
         for sample in video_samples:
             annotations = getattr(sample, "annotations", {}) or {}
-
-            # import ipdb; ipdb.set_trace()
-
-            # video is an instance of VideoAsArray or VideoLikeContainer
             video = sample.data
 
             if video is not None:

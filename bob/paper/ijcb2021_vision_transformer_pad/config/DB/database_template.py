@@ -11,20 +11,14 @@ import bob.core
 logger = bob.core.log.setup("bob.learn.pytorch")
 import numpy as np
 
-import bob.ip.stereo
-
 color = Stream('color')
-
-
 
 streams = { 'color'     : color}
 
 # *****
 
-PROTOCOL = 'grand_test-curated'
-ANNOTATIONS_DIR='/idiap/temp/ageorge/IJCB_ViT_PaperPackage/annotations-new/'
-# ANNOTATIONS_DIR='/idiap/temp/ageorge/CVPR_CMFL_PaperPackage/annotations-new/'
-
+PROTOCOL = {{PROTOCOL}}
+ANNOTATIONS_DIR={{ANNOTATIONS_DIR}}
 
 from bob.extension import rc as _rc
 from bob.paper.ijcb2021_vision_transformer_pad.database import HQWMCAPadDatabase
@@ -42,8 +36,4 @@ protocol = PROTOCOL
 groups = ["train", "dev", "eval"]
 
 """The default groups to use for reproducing the baselines.
-
-You may modify this at runtime by specifying the option ``--groups`` on the
-command-line of ``spoof.py`` or using the keyword ``groups`` on a
-configuration file that is loaded **after** this configuration resource.
 """

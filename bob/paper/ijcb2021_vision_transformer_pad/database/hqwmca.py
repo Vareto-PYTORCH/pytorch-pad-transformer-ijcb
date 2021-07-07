@@ -58,8 +58,6 @@ class HQWMCAPadFile(PadFile):
 		"""
 
 		self.vf = vf
-
-		# print('.................=============== self.annotation_directory FILE', self.annotation_directory)
 		attack_type = str(vf.type_id)
 
 		if vf.is_attack():

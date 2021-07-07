@@ -32,7 +32,6 @@ from bob.paper.ijcb2021_vision_transformer_pad.architectures import ViTranZFAS
 
 from bob.paper.ijcb2021_vision_transformer_pad.datasets import DataFolder
 
-# from bob.pad.local.datasets import DataFolderPixBiS
 
 
 color = Stream('color')
@@ -64,21 +63,11 @@ streams = { 'color'     : color}
 #==============================================================================
 # Initialize the bob database instance 
 
-# PREPROCESSED_DIR= {{PREPROCESSED_DIR}}
+PREPROCESSED_DIR= {{PREPROCESSED_DIR}}
 
+CNN_OUTPUT_DIR= {{CNN_OUTPUT_DIR}}
 
-PREPROCESSED_DIR='/idiap/temp/ageorge/IJCB_ViT_PaperPackage/preprocessed-new/'
-# PREPROCESSED_DIR='/idiap/temp/ageorge/CVPR_CMFL_PaperPackage/preprocessed_ported/'
-
-# CNN_OUTPUT_DIR= {{CNN_OUTPUT_DIR}}
-
-CNN_OUTPUT_DIR= '/idiap/temp/ageorge/IJCB_ViT_PaperPackage/CNN/LOO_Makeup/'
-
-
-# ANNOTATIONS_DIR={{ANNOTATIONS_DIR}}
-
-ANNOTATIONS_DIR='/idiap/temp/ageorge/IJCB_ViT_PaperPackage/annotations-new/'
-
+ANNOTATIONS_DIR={{ANNOTATIONS_DIR}}
 
 ORIGINAL_EXTENSION='.h5'
 
@@ -88,9 +77,7 @@ val_groups=['dev']
 
 DO_CROSS_VALIDATION=True
 
-# PROTOCOL= {{PROTOCOL}}
-PROTOCOL= 'LOO_Makeup'
-
+PROTOCOL= {{PROTOCOL}}
 
 
 from bob.extension import rc as _rc
@@ -103,12 +90,7 @@ database = HQWMCAPadDatabase(protocol=PROTOCOL,
                              n_frames=10)
 
 
-####################################################################
 
-####################################################################
-
-#=======================
-# USE_GPU={{USE_GPU}} 
 
 USE_GPU=False
 
@@ -152,10 +134,6 @@ img_transform={}
 img_transform['train'] = transforms.Compose([ChannelSelect(selected_channels = SELECTED_CHANNELS),transforms.ToPILImage(),transforms.RandomHorizontalFlip(p=0.5),transforms.ToTensor(),transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])])
 
 img_transform['val'] = transforms.Compose([ChannelSelect(selected_channels = SELECTED_CHANNELS),transforms.ToPILImage(),transforms.ToTensor(),transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])])
-
-
-
-
 
 data_balance={"train":True,"val":True}
 
@@ -217,7 +195,6 @@ for name,param in  network.named_parameters():
 
 # loss definitions
 
-
 criterion_bce= nn.BCELoss()
 
 
@@ -248,17 +225,4 @@ def compute_loss(network,img, labels, device):
 	return loss_bce
 
 
-
-#==============================================================================
-"""
-Note: Running in GPU
-
-jman submit --queue sgpu --memory 24 \
---name ViT \
---log-dir /idiap/temp/ageorge/IJCB_ViT_PaperPackage/CNN/LOO_Makeup/logs/ \
---environment="PYTHONUNBUFFERED=1" -- \
-./bin/train_generic.py \
-/idiap/user/ageorge/WORK/BATL_ENV_Bob9/src/bob.paper.ijcb2021_vision_transformer_pad/bob/paper/ijcb2021_vision_transformer_pad/config/Method/CNN_Trainer_template.py -vvv --use-gpu
-
-"""
 

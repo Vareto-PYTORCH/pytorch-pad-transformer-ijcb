@@ -21,27 +21,18 @@ from bob.pad.base.pipelines.vanilla_pad import DatabaseConnector
 
 from sklearn.pipeline import Pipeline
 
-
 from bob.bio.base.transformers import PreprocessorTransformer, ExtractorTransformer
 
 from bob.bio.video.transformer import VideoWrapper
 
-
 from bob.io.stream import Stream
 import bob.ip.stereo
-
 from sklearn.preprocessing import Normalizer
-
-
 import bob.core
 logger = bob.core.log.setup("bob.learn.pytorch")
 import numpy as np
 
-
-PREPROCESSED_DIR='/idiap/temp/ageorge/IJCB_ViT_PaperPackage/preprocessed-new/'
-
-
-
+PREPROCESSED_DIR={{PREPROCESSED_DIR}}
 
 _channel_names = ['color']
 
@@ -66,8 +57,6 @@ _image_preprocessor = FaceCropAlign(face_size=FACE_SIZE,
 
 _preprocessors[_channel_names[0]] = VideoWrapper(PreprocessorTransformer(_image_preprocessor))
 
-
-
 preprocessor = PreprocessorTransformer(
     VideoFaceCropAlignBlockPatch(
         preprocessors=_preprocessors, channel_names=_channel_names, return_multi_channel_flag=True
@@ -77,9 +66,6 @@ preprocessor = PreprocessorTransformer(
 preprocessor = bob.pipelines.wrap(
     ["sample"], preprocessor, transform_extra_arguments=(("annotations", "annotations"),),
 )
-
-
-
 
 preprocessor = bob.pipelines.CheckpointWrapper(
     preprocessor,
