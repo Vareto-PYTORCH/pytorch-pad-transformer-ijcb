@@ -95,7 +95,7 @@ CNN model path is updated in the `config/Method/Pipeline.py` file in the followi
 .. code-block:: sh
 
 	./bin/bob pad vanilla-pad \
-	/bob/paper/cross_modal_focal_loss_cvpr2021/config/Method/Pipeline.py \
+	/bob/paper/ijcb2021_vision_transformer_pad/config/Method/Pipeline.py \
 	-o <folder_to_save_results> -vvv 
 
 Similarly experiments can be repeated for all the protocols.
