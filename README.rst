@@ -42,9 +42,9 @@ unpack it.  Then, you can create a conda environment with the following
 command::
 
     $ cd bob.paper.ijcb2021_vision_transformer_pad
-    $ conda env create -f environment.yml
+    $ conda create --name bob.paper.ijcb2021_vision_transformer_pad --file spec-file.txt
     $ conda activate bob.paper.ijcb2021_vision_transformer_pad  # activate the environment
-    $ conda install gcc_linux-64
+    $ pip install timm==0.3.4
     $ buildout
     $ bin/bob_dbmanage.py all download --missing
     $ bin/train_generic.py --help  # test the installation
