@@ -39,7 +39,7 @@ the protocol names and paths to store the results.
 After this stage, the preprocessed files will be available in ``<PIPELINE_FOLDER>``, 
 which is notated from here onwards as  ``<PREPROCESSED_FOLDER>``. Running the pipeline generates the preprocessed files
 for other protocols as well since this protocol is a superset of other protocols.
-The protocols present are, 'grand_test-curated','LOO_Flexiblemask', 'LOO_Glasses', 'LOO_Makeup', 'LOO_Mannequin', 'LOO_Papermask', 'LOO_Rigidmask', 'LOO_Tattoo','LOO_Replay'.
+The protocols present are, LOO\_Flexiblemask, LOO\_Glasses, LOO\_Makeup, LOO\_Mannequin, LOO\_Papermask, LOO\_Rigidmask, LOO\_Tattoo, and LOO\_Replay.
 
 
 Training the CNN Model with ViT
